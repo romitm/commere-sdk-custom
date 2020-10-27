@@ -1,0 +1,30 @@
+{
+    "name": "sandbox-ccapi-node-sdk-evaluation",
+    "version": "0.0.1",
+    "description": "Salesforce CCAPI Invoker from the Sandbox and evaluating Node SDK Commerce-SDK",
+    "author": "Romit Maity <rmaity@salesforce.com>",
+    "keywords": [
+        "api",
+        "ccapi",
+        "ocapi",
+        "server",
+        "client",
+        "oauth2",
+        "sandbox"
+    ],
+    "contributors": [
+        {
+            "name": "Romit Maity",
+            "email": "rmaity@salesforce.com"
+        }
+    ],
+    "dependencies": {
+        "commerce-sdk": "^2.1.0",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.3",
+        "tsc-watch": "^4.2.9",
+        "minify": "^6.0.0"
+    },
+    "devDependencies": {},
+    "scripts": {}
+}
