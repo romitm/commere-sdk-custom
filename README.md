@@ -44,13 +44,16 @@ This section describes what you will need to get started. Please note that you w
 5. Make sure when you follow the steps below when you create the API Client ID.
 
 >Salesforce Commerce API (Scope):
-Add your sandbox otherwise it will not work on that sandbox
+
+>Add your sandbox otherwise it will not work on that sandbox
 
 >Allowed Scopes:
-sfcc.shopper-products
-sfcc.shopper-customers
+
+>sfcc.shopper-products
+>sfcc.shopper-customers
 
 >Token Endpoint Auth Method: client_secret_post
+
 >Access Token Format: JWT
 
 ## Execution
@@ -82,13 +85,15 @@ $ node shopper-product.js
 If you are keen on experimenting with the compiler options then create a `tsconfig.json` file. Here are some references to get setup with a `tsconfig.json` file. Currently tsconfig is out of scope of the current evaluation.
 
 https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+
 https://stackoverflow.com/questions/37413533/what-is-the-purpose-of-tsconfig-json
 
 ## Warranty & Support
 
-This is completely open source and free to modify and distribute. There is no warranty or support for anything related to performance, scalbility or code compatibility. Security assessment of the code and what it performs has to be verified by the party that agrees to download and use this evaluation code. The evaluation code is not supported, and is provided "as is", without warranty of any kind, express or implied. in no event shall the distributor, Romit (romitmaity@yahoo.com) have any liability for any damages.
+This is completely open source and free to modify and distribute. There is no warranty or support for anything related to performance, scalbility or code compatibility. Security assessment of the code and what it performs has to be verified by the party that agrees to download and use this evaluation code. The evaluation code is not supported, and is provided "as is", without warranty of any kind, express or implied. In no event shall the distributor, Romit Maity (romitmaity@yahoo.com) have any liability for any damages.
 
 ## Copyright
 
 &copy; Romit Maity 2020
+
 *Free to modify and distribute.*

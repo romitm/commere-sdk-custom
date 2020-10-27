@@ -17,7 +17,7 @@
 import * as commerceSdk from "commerce-sdk";
 import { apiConfig, storefrontAttributes } from "./dwconstants";
 
-//client configuration parameters
+/* Client configuration parameters */
 const clientConfig: commerceSdk.ClientConfig = {
     parameters: {
         clientId: apiConfig.clientId,
@@ -32,8 +32,6 @@ const clientConfig: commerceSdk.ClientConfig = {
  * Invoke helper function to retrieve the authorization token for the guest user
  * Doc: https://salesforcecommercecloud.github.io/commerce-sdk/modules/_helpers_.html#getshoppertoken
  */
-
-
 commerceSdk.helpers
     .getShopperToken(clientConfig, { type: "guest" })
     .then(async (token) => {
@@ -116,39 +114,3 @@ commerceSdk.helpers
         console.error(e);
         console.error(await e.response.text());
     });
-
-// Get a JWT to use with Shopper API clients, a guest token in this case
-// helpers.getShopperToken(clientConfig, { type: "guest" }).then(async (token) => {
-
-//     try {
-//         // Add the token to the client configuration
-//         clientConfig.headers["authorization"] = token.getBearerHeader();
-
-//         // Create a new ShopperSearch API client
-//         const searchClient = new Search.ShopperSearch(clientConfig);
-
-//         // Search for dresses
-//         const searchResults = await searchClient.productSearch({
-//             parameters: {
-//                 q: "dress",
-//                 limit: 5
-//             }
-//         });
-
-//         if (searchResults.total) {
-//             const firstResult = searchResults.hits[0];
-//             console.log(`${firstResult.productId} ${firstResult.productName}`);
-//         } else {
-//             console.log("No results for search");
-//         }
-
-//         return searchResults;
-
-//     } catch (e) {
-//         console.error(e);
-//         console.error(await e.response.text());
-//     }
-// }).catch(async (e) => {
-//     console.error(e);
-//     console.error(await e.response.text());
-// });
