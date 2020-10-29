@@ -4,6 +4,7 @@
 *.bak
 dwconstants.js
 dwconstants.ts
+authtoken.json
 package-lock.json
 .DS_Store
 /node_modules/*

@@ -16,10 +16,12 @@
  */
 import * as commerceSdk from "commerce-sdk";
 import * as commerceSdkUtils from "@commerce-apps/core";
-import { apiConfig, loginAttributes, customerAttributes } from "./dwconstants";
+import { apiConfig } from "../dwconstants";
+import { loginAttributes, customerAttributes } from "./apiconstants";
+import { readCustomerJWTAttibutes, writeCustomerJWTAttributes } from "./apiutil";
 import { ShopperCustomers } from "commerce-sdk/dist/customer/customer";
 
-//client configuration parameters
+/* Client configuration parameters */
 const clientConfig: commerceSdk.ClientConfig = {
     parameters: {
         clientId: apiConfig.clientId,
@@ -37,6 +39,8 @@ const clientConfig: commerceSdk.ClientConfig = {
  */
 async function getRegisteredCustomerInfo({ loginEmail, loginPwd }: { loginEmail: String; loginPwd: String }): Promise<commerceSdkUtils.ShopperToken<Object>> {
     try {
+        writeCustomerJWTAttributes("t55545876", "blahmeh@foobar.com", "45756487656");
+        //readCustomerJWTAttibutes();
         // Credentials and Base64 Encoding of that
         const credentials = `${loginEmail}:${loginPwd}`;
         const buffer = Buffer.from(credentials);
@@ -60,6 +64,8 @@ async function getRegisteredCustomerInfo({ loginEmail, loginPwd }: { loginEmail:
             },
             true
         );
+
+        // Prepare the ShopperToken Object for subsequent calls
         const shopperToken = new commerceSdkUtils.ShopperToken(
             await commerceSdkUtils.getObjectFromResponse(resClient),
             commerceSdkUtils.stripBearer(resClient.headers.get("Authorization"))
@@ -138,3 +144,21 @@ getRegisteredCustomerInfo({ loginEmail: loginAttributes.shopperUsername, loginPw
         console.error(`Error in getRegisteredCustomerInfo: ${error}`);
         console.error(await error.response.text());
     });
+
+// function readCustomerJWTAttibutes(): Object {
+//     fs.readFile("./authtoken.json", "utf-8", function (err, data) {
+//         console.log(err);
+//         console.log(data);
+//     });
+//     return;
+// }
+
+// function writeCustomerJWTAttributes(authToken: String, customerLogin: String, customerId: String) {
+//     try {
+//         const currTimeMillis = Date.now();
+//         const wrData = `{"createTime": ${currTimeMillis}, "authToken": "${authToken}", "customerLogin": "${customerLogin}", "customerId": "${customerId}" }`;
+//         fs.writeFileSync("./authtoken.json", wrData);
+//     } catch (err) {
+//         console.error(err.response.text());
+//     }
+// }

@@ -18,19 +18,3 @@ export const apiConfig = {
     shortCode: "your-short-code",
     siteId: "your-site-id",
 };
-
-export const storefrontAttributes = {
-    productId: "25591766M",
-    productIds: "25686544M,25791388M",
-    catId: "root",
-    catIds: "mens,womens,jewelry",
-};
-
-export const loginAttributes = {
-    shopperUsername: "your-shopper-username",
-    shopperPassword: "your-shopper-password",
-};
-
-export const customerAttributes = {
-    addressName: "Home",
-};

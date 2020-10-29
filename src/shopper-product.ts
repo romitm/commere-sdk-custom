@@ -15,7 +15,8 @@
  * Note: Replace configuration parameters before running
  */
 import * as commerceSdk from "commerce-sdk";
-import { apiConfig, storefrontAttributes } from "./dwconstants";
+import { apiConfig } from "../dwconstants";
+import { storefrontAttributes } from "./apiconstants";
 
 /* Client configuration parameters */
 const clientConfig: commerceSdk.ClientConfig = {
