@@ -9,15 +9,14 @@ const fileName = "./authtoken.json";
  * @param customerLogin
  * @param customerId
  */
-export function writeCustomerJWTAttributes(authToken: String, customerLogin: String, customerId: String) {
+export function writeCustomerJWTAttributes(registeredCustomerObj: Object, registeredCustomerToken: String) {
     try {
         const currTimeMillis = Date.now();
-        console.log(currTimeMillis);
-        const wrData = `{ "createTime": ${currTimeMillis}, "authToken": "${authToken}", "customerLogin": "${customerLogin}", "customerId": "${customerId}" }`;
-        // fs.writeFileSync(fileName, wrData, (err) => {
-        //     console.log(`Error in writeCustomerJWTAttributes fn():\n${err.message}`);
-        // });
-        fs.writeFileSync(fileName, wrData);
+        console.log(`Current Time in ms: ${currTimeMillis}`);
+        const wrData = `[{"c_tokenCreateTimeInMillis": ${currTimeMillis}, "c_customerJWT": "${registeredCustomerToken}"}, ${JSON.stringify(registeredCustomerObj)}]`;
+        fs.writeFile(fileName, wrData, (err) => {
+            console.log(`Error in writeCustomerJWTAttributes fn():\n${err.message}`);
+        });
     } catch (err) {
         console.error(`Error in writeCustomerJWTAttributes fn():\n${err.response.text()}`);
     }
@@ -27,10 +26,12 @@ export function writeCustomerJWTAttributes(authToken: String, customerLogin: Str
  * Get the details of the logged in customer and the JWT info
  * @returns Object
  */
-export function readCustomerJWTAttibutes(): Object {
-    fs.readFile(fileName, "utf-8", function (err, data) {
-        console.log(err);
-        console.log(data);
-    });
-    return;
+export function readCustomerJWTAttibutes() {
+    try {
+        const fContents = fs.readFileSync(fileName);
+        //console.log(JSON.parse(fContents.toString()));
+        return JSON.parse(fContents.toString());
+    } catch (err) {
+        console.error(`Error in readCustomerJWTAttibutes fn():\n${err.response.text()}`);
+    }
 }

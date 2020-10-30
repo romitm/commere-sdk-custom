@@ -39,41 +39,53 @@ const clientConfig: commerceSdk.ClientConfig = {
  */
 async function getRegisteredCustomerInfo({ loginEmail, loginPwd }: { loginEmail: String; loginPwd: String }): Promise<commerceSdkUtils.ShopperToken<Object>> {
     try {
-        writeCustomerJWTAttributes("t55545876", "blahmeh@foobar.com", "45756487656");
-        //readCustomerJWTAttibutes();
-        // Credentials and Base64 Encoding of that
-        const credentials = `${loginEmail}:${loginPwd}`;
-        const buffer = Buffer.from(credentials);
-        const base64data = buffer.toString("base64");
+        //
+        const currentCustomer = readCustomerJWTAttibutes();
+        const isTokenAvl = (Date.now() - currentCustomer[0].c_tokenCreateTimeInMillis) / 1000 > 1800;
+        console.log(isTokenAvl);
+        //console.log(currentCustomer[0].c_tokenCreateTimeInMillis);
+        if (isTokenAvl) {
+            // Credentials and Base64 Encoding of that
+            const credentials = `${loginEmail}:${loginPwd}`;
+            const buffer = Buffer.from(credentials);
+            const base64data = buffer.toString("base64");
 
-        // Add to the Client Config object of the SDK
-        clientConfig.headers["Authorization"] = `Basic ${base64data}`;
+            // Add to the Client Config object of the SDK
+            clientConfig.headers["Authorization"] = `Basic ${base64data}`;
 
-        // Print the Header
-        console.log(`Header:\n${JSON.stringify(clientConfig.headers, null, 4)}`);
+            // Print the Header
+            console.log(`Header:\n${JSON.stringify(clientConfig.headers, null, 4)}`);
 
-        // Instantiate the ShopperCustomers with the new config
-        const shopperClient = new commerceSdk.Customer.ShopperCustomers(clientConfig);
+            // Instantiate the ShopperCustomers with the new config
+            const shopperClient = new commerceSdk.Customer.ShopperCustomers(clientConfig);
 
-        // Authorize the customer and then return the ShopperCustomers object
-        /* API call 01: Authorize Customer call here. */
-        const resClient = await shopperClient.authorizeCustomer(
-            {
-                headers: clientConfig.headers,
-                body: { type: "credentials" },
-            },
-            true
-        );
+            // Authorize the customer and then return the ShopperCustomers object
+            /* API call 01: Authorize Customer call here. */
+            const resClient = await shopperClient.authorizeCustomer(
+                {
+                    headers: clientConfig.headers,
+                    body: { type: "credentials" },
+                },
+                true
+            );
+            
+            // Extract the Header and store the object data
+            const customerResponseObj = await commerceSdkUtils.getObjectFromResponse(resClient);
+            const customerAuthToken = commerceSdkUtils.stripBearer(resClient.headers.get("Authorization"));
 
-        // Prepare the ShopperToken Object for subsequent calls
-        const shopperToken = new commerceSdkUtils.ShopperToken(
-            await commerceSdkUtils.getObjectFromResponse(resClient),
-            commerceSdkUtils.stripBearer(resClient.headers.get("Authorization"))
-        );
-        return shopperToken;
-    } catch (e) {
-        console.error(e);
-        console.error(e.response.text());
+            // Write Token and Customer object info to file
+            writeCustomerJWTAttributes(customerResponseObj, customerAuthToken);
+
+            // Prepare the ShopperToken Object for subsequent calls
+            const shopperToken = new commerceSdkUtils.ShopperToken(customerResponseObj, customerAuthToken);
+            return shopperToken;
+        } else {
+            // No need for Registered Customer Token retrieval as the token is still valid
+            const shopperToken = new commerceSdkUtils.ShopperToken(currentCustomer[1], currentCustomer[0].c_customerJWT);
+            return shopperToken;
+        }
+    } catch (err) {
+        console.error(`Error in getRegisteredCustomerInfo fn():\n${err.response.text()}`);
     }
 }
 
